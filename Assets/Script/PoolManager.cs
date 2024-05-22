@@ -40,7 +40,7 @@ public class PoolManager : MonoBehaviour {
             // 새롭게 생성하고 select 변수에 할당
         if(!select)
         {
-            select = Instantiate(prefabs[index], transform);
+            select = Instantiate(prefabs[index], transform); // 동적 오브젝트 생성, Java 기준 AOP와 비슷하다고 생각하면 되나..?
             pools[index].Add(select);
         }
         return select;

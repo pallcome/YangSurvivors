@@ -17,7 +17,7 @@ public class Spanwer : MonoBehaviour {
 
     void Update() {
         timer += Time.deltaTime;
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTIme / 10f), spawnData.Length-1); // 10f는 10초마다
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length-1); // 10f는 10초마다
 
         if (timer > spawnData[level].spawnTime)
         {
