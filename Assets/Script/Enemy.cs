@@ -32,7 +32,8 @@ public class Enemy : MonoBehaviour
     {
         // GetCurrentAnimatorStateInfo : 현재 상태 정보를 가져오는 함수
         // anim.GetCurrentAnimatorStateInfo(0) : 0번째 레이어
-        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit") || !GameManager.instance.isLive)
         {
             return;
         }
@@ -45,7 +46,7 @@ public class Enemy : MonoBehaviour
     }
     void LateUpdate()
     {
-        if (!isLive)
+        if (!isLive || !GameManager.instance.isLive)
         {
             return;
         }
