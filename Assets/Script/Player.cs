@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float speed;
     public Scanner scanner;
     public Hand[] hands;
+    public RuntimeAnimatorController[] animCon;
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -25,6 +26,11 @@ public class Player : MonoBehaviour
         hands = GetComponentsInChildren<Hand>(true); // 비활성화는 true
     }
 
+    private void OnEnable()
+    {
+        speed *= Character.Speed;
+        anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
+    }
     void Update()
     {
         if (!GameManager.instance.isLive)
@@ -32,8 +38,8 @@ public class Player : MonoBehaviour
             return;
         }
 
-        inputVec.x = Input.GetAxisRaw("Horizontal");
-        inputVec.y = Input.GetAxisRaw("Vertical");
+        //inputVec.x = Input.GetAxisRaw("Horizontal");
+        //inputVec.y = Input.GetAxisRaw("Vertical");
     }
     private void FixedUpdate()
     {
@@ -83,6 +89,7 @@ public class Player : MonoBehaviour
             }
 
             anim.SetTrigger("Dead");
+            GameManager.instance.GameOver();
         }
     }
 }

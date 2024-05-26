@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour {
 
     public void LevelUp(float damage, int count)
     {
-        this.damage += damage;
+        this.damage = damage * Character.Damage;
         this.count += count;
 
         if(id == 0)
@@ -60,8 +60,8 @@ public class Weapon : MonoBehaviour {
 
         // Property Set
         id = data.itemId;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        damage = data.baseDamage * Character.Damage;
+        count = data.baseCount + Character.Count;
 
         for(int index=0; index<GameManager.instance.pool.prefabs.Length; index++)
         {
@@ -75,11 +75,11 @@ public class Weapon : MonoBehaviour {
         switch (id)
         {
             case 0:
-                speed = 150; // -로 회전을 Vector3.forward로 하던 +로 하고 Vector3.back을 해야 시계방향으로 돔
+                speed = 150 * Character.WeaponSpeed; // -로 회전을 Vector3.forward로 하던 +로 하고 Vector3.back을 해야 시계방향으로 돔
                 Batch();
                 break;
             default:
-                speed = 0.4f;
+                speed = 0.5f * Character.WeaponRate;
                 break;
         }
 
@@ -112,7 +112,9 @@ public class Weapon : MonoBehaviour {
             Vector3 rotVec = Vector3.back * 360 * index / count; // 360도를 갯수만큼 나눠서 각도를 부여
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World); // up이 되었다는게 이해가 안감
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1 is Infinity Per(-1은 무한 관통)
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -100 is Infinity Per(-1은 무한 관통)
+
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 
@@ -133,5 +135,7 @@ public class Weapon : MonoBehaviour {
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir); // FromToRotation : 지정된 축을 중심으로 목표를 향해 회전하는 함수
         bullet.GetComponent<Bullet>().Init(damage, count, dir); // -1 is Infinity Per(-1은 무한 관통)
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
